@@ -168,8 +168,8 @@ Air Defence/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-org>/<your-repo>.git
-cd <your-repo>
+git clone https://github.com/ATECH-Team-HSS/Air-Defence-System-Project.git
+cd Air-Defence-System-Project
 ```
 
 ### 2. Create a virtual environment
@@ -347,24 +347,15 @@ The repository includes GitHub Actions CI under `.github/workflows/ci.yml`.
   <img src="docs/assets/ui/ui-control-station.jpg" alt="Air Defence control station" width="48%">
 </p>
 
-### Demonstration videos
-
-- [`autonomous-balloon-tracking.mp4`](docs/assets/general/autonomous-balloon-tracking.mp4)
-- [`autonomous-balloon-engagement.mp4`](docs/assets/general/autonomous-balloon-engagement.mp4)
-
 ---
 
-## Development roadmap
+### Autonomous balloon tracking
 
-Recommended next improvements before public release:
+![Autonomous balloon tracking](docs/assets/general/autonomous-balloon-tracking.gif)
 
-1. Add or restore `src/balloon_shooter/ai_detection_widget.py` so the UI runs cleanly.
-2. Define one canonical Python↔MCU JSON schema and test it from both sides.
-3. Add `requirements-ui.txt` or package extras such as `pip install .[ui]`.
-4. Add UI smoke tests to CI.
-5. Remove committed `__pycache__` folders from the repository.
-6. Standardize documentation filenames: `README_AI.md` and `README_UI.md`.
-7. Normalize asset folder names to lowercase: `docs/assets/ai` and `docs/assets/ui`.
+### Autonomous balloon engagement
+
+![Autonomous balloon engagement](docs/assets/general/autonomous-balloon-engagement.gif)
 
 ---
 
