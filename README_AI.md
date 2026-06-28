@@ -1,4 +1,4 @@
-# Air Defence ATech — AI System
+# AI System
 
 <p align="center">
   <img alt="YOLO11" src="https://img.shields.io/badge/YOLO-11-orange">
