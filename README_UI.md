@@ -1,4 +1,4 @@
-# Air Defence ATech — PyQt5 Control Station
+# PyQt5 Control Station
 
 <p align="center">
   <img alt="PyQt5" src="https://img.shields.io/badge/PyQt5-control%20station-purple">
