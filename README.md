@@ -1,7 +1,7 @@
 # Autonomous Air Defence Balloon Tracking Algorithm — YOLO Computer Vision & PyQt5 Control UI
 
 <p align="center">
-  <img src="assets/ATech_logo.png" alt="ATech logo" width="180">
+  <img src="assets/logo.png" alt="ATech logo" width="180">
 </p>
 
 <p align="center">
