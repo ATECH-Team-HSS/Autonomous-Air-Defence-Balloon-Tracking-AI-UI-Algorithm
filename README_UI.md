@@ -7,7 +7,7 @@
   <img alt="PID" src="https://img.shields.io/badge/PID-pan%2Ftilt-orange">
 </p>
 
-This document explains the user-interface and control-station side of **Air Defence ATech**. The UI is a PyQt5 desktop application for camera/AI feedback, mission state, PID tuning, manual jogging, serial communication, command display, and system logging.
+This document explains the user-interface and control-station side of the project. The UI is a PyQt5 desktop application for camera/AI feedback, mission state, PID tuning, manual jogging, serial communication, command display, and system logging.
 
 > The UI is intended for safe educational robotics prototyping. Do not connect high-power outputs until the AI widget, MCU communication, JSON schema, safety state, and emergency-stop behavior are verified.
 
