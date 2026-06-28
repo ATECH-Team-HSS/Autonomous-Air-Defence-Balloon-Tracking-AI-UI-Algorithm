@@ -1,6 +1,10 @@
 # Autonomous Air Defence Balloon Tracking Algorithm — YOLO Computer Vision & PyQt5 Control UI
 
 <p align="center">
+  <img src="assets/ATech_logo.png" alt="ATech logo" width="180">
+</p>
+
+<p align="center">
   <strong>YOLO11 balloon detection, real-time tracking, PyQt5 control-station UI, and servo-turret integration for a safe educational Air Defence robotics prototype.</strong>
 </p>
 
