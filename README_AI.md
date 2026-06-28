@@ -7,7 +7,7 @@
   <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-blue">
 </p>
 
-This document explains the AI subsystem of **Air Defence ATech**: the YOLO11 balloon detector, dataset, training artifacts, inference pipeline, tracking logic, target selection, alignment checks, safety-zone evaluation, and integration contract for the PyQt5 UI and hardware-control layers.
+This document explains the AI subsystem: the YOLO11 balloon detector, dataset, training artifacts, inference pipeline, tracking logic, target selection, alignment checks, safety-zone evaluation, and integration contract for the PyQt5 UI and hardware-control layers.
 
 ---
 
