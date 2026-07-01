@@ -9,10 +9,52 @@
 
 This document explains the user-interface and control-station side of the project. The UI is a PyQt5 desktop application for camera/AI feedback, mission state, PID tuning, manual jogging, serial communication, command display, and system logging.
 
-> The UI is intended for safe educational robotics prototyping. Do not connect high-power outputs until the AI widget, MCU communication, JSON schema, safety state, and emergency-stop behavior are verified.
+> The UI is intended for safe educational robotics prototyping.
+
+---
+## Key Features
+
+- PyQt5-based desktop control-station interface.
+- Modular GUI layout with upper, middle, and lower frames.
+- Camera preview using OpenCV and Qt widgets.
+- Integrated AI-detection widget.
+- Target-position handling using emitted object center coordinates.
+- PID-based pan and tilt command generation.
+- Configurable PID values for pan and tilt axes.
+- Configurable aiming parameters, including minimum RPM, maximum RPM, and aim radius.
+- Manual jogging through GUI sliders.
+- Serial communication with MCU devices using JSON messages.
+- Separate serial connection handling for a turret MCU and a station MCU.
+- Mission selection workflow with Manual Mode, Mission 1, Mission 2, and a placeholder Mission 3.\
+- Embedded-side JSON messenger code for exchanging commands and status messages.
+---
+### Main Modules
+
+| Module | Purpose |
+|---|---|
+| `src/main_window.py` | Entry point for the PyQt5 application. Builds the main window and connects the main GUI frames. |
+| `src/ui/frames/upper_frame.py` | Contains the recognition/camera area, mission information tabs, jogging sliders, PID inputs, aiming controls, and port configuration controls. |
+| `src/ui/frames/middle_frame.py` | Contains the main command buttons, mission selector, displayed pan/tilt command values, visual indicator status, and actuator status display. |
+| `src/ui/frames/lower_frame.py` | Provides a logging area for system updates, errors, completed actions, and AI-system messages. |
+| `src/ui/signals_controller.py` | Central logic controller. Connects GUI signals, handles mission state, receives AI detection events, runs PID control, and sends MCU commands. |
+| `src/hardware_manager/camera_communication.py` | Handles OpenCV camera connection, disconnection, and live frame display inside the GUI. |
+| `src/hardware_manager/mcu_communication.py` | Handles serial communication with turret and station MCUs using JSON messages. |
+| `src/hardware_manager/pid_tracker.py` | Implements the PID tracking logic that converts target image error into pan/tilt speed commands. |
+| `src/recognition_system/start_camera.py` | Standalone/simple camera preview widget. |
+| `src/mcu_bridge/JsonMessenger.cpp` and `.h` | Embedded-side JSON communication helper for Arduino-compatible firmware. |
+| `assets/` | Contains GUI icons and project branding images. |
 
 ---
 
+## Technologies Used
+
+- **Python** for the desktop control-station application.
+- **PyQt5** for the graphical user interface.
+- **OpenCV** for camera capture and frame display.
+- **PySerial** for serial communication with microcontrollers.
+- **JSON** for structured command and status messages.
+
+---
 ## UI overview
 
 The main UI entry point is:
@@ -69,25 +111,6 @@ Display command values, status indicators, and logs
   <img src="docs/assets/ui/ui-control-station.jpg" alt="Air Defence UI control station" width="85%">
 </p>
 
----
-
-## Main UI modules
-
-| Path | Purpose |
-| --- | --- |
-| `src/main_window.py` | Main PyQt5 application entry point and frame composition. |
-| `src/ui/main_window.ui` | Qt Designer UI file. |
-| `src/ui/frames/upper_frame.py` | Camera/AI view, mission tabs, jogging sliders, PID fields, aim parameters, port controls. |
-| `src/ui/frames/middle_frame.py` | Start/stop/shoot controls, mission selector, command displays, actuator status icons. |
-| `src/ui/frames/lower_frame.py` | System log panel for errors, updates, completed operations, and AI messages. |
-| `src/ui/signals_controller.py` | Main GUI logic controller connecting frames, AI signals, PID tracking, and MCU commands. |
-| `src/hardware_manager/camera_communication.py` | Camera connection, disconnection, and frame display using OpenCV and Qt. |
-| `src/hardware_manager/mcu_communication.py` | Serial communication with turret and station MCUs. |
-| `src/hardware_manager/pid_tracker.py` | PID tracking logic for converting target error into pan/tilt speed commands. |
-| `src/mcu_bridge/JsonMessenger.cpp` / `.h` | Embedded-side JSON helper for Arduino-compatible firmware. |
-
----
-
 ## Upper frame
 
 `UpperFrame` is the operator's main interaction area. It includes:
@@ -99,18 +122,6 @@ Display command values, status indicators, and logs
 - PID tuning controls for pan and tilt.
 - Aiming parameter controls such as minimum RPM, maximum RPM, and aim radius.
 - Camera and MCU port configuration controls.
-
-Expected AI widget signals used by `SignalsMainController`:
-
-| Signal | Meaning |
-| --- | --- |
-| `status_message` | Text log from AI subsystem. |
-| `AI_detection_running` | Indicates whether AI inference is active. |
-| `balloon_position` | Emits target center coordinates. |
-| `balloon_counts` | Emits detected friendly/enemy counts. |
-| `camera_size` | Emits current frame width/height for PID center calculation. |
-
-> Integration note: the current UI imports `balloon_shooter.ai_detection_widget.AIDetectionWidget`. If this file is missing in your branch, create an adapter around the existing `balloon_shooter` AI runtime and emit the signals above.
 
 ---
 
@@ -142,7 +153,6 @@ The middle frame is connected to `SignalsMainController`, which interprets user 
 - AI-system messages.
 - MCU communication messages.
 
-For robotics demos, this log area is important. It tells the operator what the system is doing instead of hiding state inside the terminal.
 
 ---
 
@@ -211,77 +221,8 @@ Command concept:
 }
 ```
 
-Before public release, define this as the canonical schema and make sure the Python and embedded C++ sides both parse the same fields.
-
 ---
 
-## Run the UI
+## Safety and Ethical Notice
 
-Install base requirements first:
-
-```bash
-python -m pip install -r requirements.txt
-python -m pip install -e .
-```
-
-Install UI dependencies if they are not already included in your environment:
-
-```bash
-python -m pip install PyQt5 pyserial simple-pid
-```
-
-Run:
-
-```bash
-python src/main_window.py
-```
-
-Recommended from repository root, because the current code uses relative asset paths such as `assets/ATech_logo.png`.
-
----
-
-## Operator checklist
-
-Before connecting real hardware:
-
-1. Run the UI without MCU hardware.
-2. Confirm that camera preview works.
-3. Confirm that the AI detection widget loads and emits signals.
-4. Test PID command values with dummy target coordinates.
-5. Send serial commands to a safe dummy receiver first.
-6. Verify JSON schema compatibility with firmware.
-7. Test emergency stop and manual stop behavior.
-8. Use LEDs or safe indicators before any physical output.
-9. Enable physical actuation only under direct supervision.
-
----
-
-## Known integration risks
-
-| Severity | Risk | Fix |
-| --- | --- | --- |
-| Critical | Missing `balloon_shooter.ai_detection_widget` breaks full UI startup if not restored. | Add the adapter or update imports to use the existing AI runtime. |
-| High | Python and C++ JSON schemas may drift. | Create one schema document and round-trip tests. |
-| High | Serial port handling is Windows-style `COM` focused. | Add cross-platform port discovery. |
-| Medium | UI dependencies are not separated clearly from AI dependencies. | Add `requirements-ui.txt` or package extras. |
-| Medium | UI has no smoke test in CI. | Add minimal import/startup test with Qt offscreen mode. |
-
----
-
-## UI improvement roadmap
-
-- Add a polished dark engineering theme.
-- Add forbidden-zone editor directly in the video panel.
-- Add QR-zone editor directly in the video panel.
-- Add live FPS, latency, inference device, and model confidence display.
-- Add command telemetry table with last TX/RX timestamps.
-- Add log export to CSV or JSONL.
-- Add replay mode for recorded videos.
-- Add operator-safe simulation mode.
-- Add UI screenshots to every major release.
-
----
-
-## Keywords
-
-PyQt5 robotics UI, control station, OpenCV camera interface, Air Defence GUI, Python robotics dashboard, PID tuning, pan tilt turret, serial communication, UART, JSON MCU protocol, robotics operator interface, mechatronics GUI, AI detection widget, YOLO11 UI integration.
+This project is intended strictly for educational, simulation, research, and safe robotics prototyping purposes. It is not intended for real-world weaponization, autonomous targeting, harmful use, or deployment against people, animals, vehicles, or property.
