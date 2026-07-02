@@ -168,8 +168,8 @@ Air Defence/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/ATECH-Team-HSS/Air-Defence-System-Project.git
-cd Air-Defence-System-Project
+git clone https://github.com/ATECH-Team-HSS/Autonomous-Air-Defence-Balloon-Tracking-AI-UI-Algorithm.git
+cd Autonomous-Air-Defence-Balloon-Tracking-AI-UI-Algorithm
 ```
 
 ### 2. Create a virtual environment
